@@ -29,21 +29,21 @@ pub struct TerrainMaterial {
 
 impl Material for TerrainMaterial {
     fn fragment_shader() -> ShaderRef {
-        "shaders/terrain.frag".into()
+        "shaders/terrain.wgsl".into()
     }
 
     fn alpha_mode(&self) -> AlphaMode {
         self.alpha_mode
     }
 
-    fn specialize(
-        _pipeline: &MaterialPipeline<Self>,
-        descriptor: &mut RenderPipelineDescriptor,
-        _layout: &MeshVertexBufferLayout,
-        _key: MaterialPipelineKey<Self>,
-    ) -> Result<(), SpecializedMeshPipelineError> {
-        // descriptor.vertex.entry_point = "main".into();
-        descriptor.fragment.as_mut().unwrap().entry_point = "main".into();
-        Ok(())
-    }
+    // fn specialize(
+    //     _pipeline: &MaterialPipeline<Self>,
+    //     descriptor: &mut RenderPipelineDescriptor,
+    //     _layout: &MeshVertexBufferLayout,
+    //     _key: MaterialPipelineKey<Self>,
+    // ) -> Result<(), SpecializedMeshPipelineError> {
+    //     // descriptor.vertex.entry_point = "main".into();
+    //     descriptor.fragment.as_mut().unwrap().entry_point = "main".into();
+    //     Ok(())
+    // }
 }

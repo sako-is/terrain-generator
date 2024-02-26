@@ -116,7 +116,7 @@ pub fn spawn_terrain_gpu(mut commands: Commands,
             octaves: map_info.octaves,
             persistance: map_info.persistance,
             lacunarity: map_info.lacunarity,
-            alpha_mode: AlphaMode::Blend
+            alpha_mode: AlphaMode::Premultiplied
         }),
         ..default()
     });

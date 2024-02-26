@@ -4,12 +4,12 @@ layout(location = 0) in vec2 v_Uv;
 
 layout(location = 0) out vec4 o_Target;
 
-layout(set = 1, binding = 0) uniform uint uniform uint seed;
-layout(set = 1, binding = 1) uniform uint uniform uint size;
-layout(set = 1, binding = 2) uniform uint uniform float scale;
-layout(set = 1, binding = 3) uniform uint uniform int octaves;
-layout(set = 1, binding = 4) uniform uint uniform float persistance;
-layout(set = 1, binding = 5) uniform uint uniform int lacunarity;
+layout(set = 2, binding = 0) uniform uint uniform uint seed;
+layout(set = 2, binding = 1) uniform uint uniform uint size;
+layout(set = 2, binding = 2) uniform uint uniform float scale;
+layout(set = 2, binding = 3) uniform uint uniform int octaves;
+layout(set = 2, binding = 4) uniform uint uniform float persistance;
+layout(set = 2, binding = 5) uniform uint uniform int lacunarity;
 
 // Based on Morgan McGuire @morgan3d
 // https://www.shadertoy.com/view/4dS3Wd
