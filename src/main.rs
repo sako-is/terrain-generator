@@ -23,12 +23,12 @@ fn main() {
         .add_systems(Startup, camera::pan_orbit)
         .add_plugins(terrain::TerrainPlugin {
             seed: rng.gen(), 
-            width: 256, 
-            height: 256, 
+            size: 256, 
             scale: 50., 
             octaves: 4, 
             persistance: 0.5, 
-            lacunarity: 3 
+            lacunarity: 2,
+            shader: true 
         })
         .add_plugins(EguiPlugin)
         .add_systems(Startup, spawn_lights)

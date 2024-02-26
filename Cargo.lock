@@ -1742,17 +1742,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "farm_game"
-version = "0.1.0"
-dependencies = [
- "bevy",
- "bevy_egui",
- "bevy_panorbit_camera",
- "noise",
- "rand 0.8.5",
-]
-
-[[package]]
 name = "fastrand"
 version = "2.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3434,6 +3423,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "06794f8f6c5c898b3275aebefa6b8a1cb24cd2c6c79397ab15774837a0bc5755"
 dependencies = [
  "winapi-util",
+]
+
+[[package]]
+name = "terrain_generator"
+version = "0.1.0"
+dependencies = [
+ "bevy",
+ "bevy_egui",
+ "bevy_panorbit_camera",
+ "noise",
+ "rand 0.8.5",
 ]
 
 [[package]]

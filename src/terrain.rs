@@ -10,26 +10,26 @@ use bevy::{
 pub mod mesh;
 pub mod noise;
 pub mod customize;
+pub mod material;
 
 pub struct TerrainPlugin {
     pub seed: u32,
-    pub width: u32,
-    pub height: u32,
+    pub size: u32,
     pub scale: f32,
     pub octaves: i32,
     pub persistance: f32,
-    pub lacunarity: i32
+    pub lacunarity: i32,
+    pub shader: bool
 }
 
 #[derive(Resource)]
 pub struct MapInfo {
     seed: u32,
-    width: u32,
-    height: u32,
+    size: u32,
     scale: f32,
     octaves: i32,
     persistance: f32,
-    lacunarity: i32
+    lacunarity: i32,
 }
 
 #[derive(Component)]
@@ -39,19 +39,24 @@ impl Plugin for TerrainPlugin {
     fn build(&self, app_: &mut App) {
         app_.insert_resource(MapInfo {
                         seed: self.seed,
-                        width: self.width, 
-                        height: self.height, 
+                        size: self.size, 
                         scale: self.scale,
                         octaves: self.octaves,
                         persistance: self.persistance,
                         lacunarity: self.lacunarity
             })
-            .add_systems(Startup, spawn_terrain)
-            .add_systems(Update, customize::customize_terrain_menu);
+            .add_plugins(MaterialPlugin::<material::TerrainMaterial>::default());
+        if self.shader {
+            app_.add_systems(Startup, spawn_terrain_gpu)
+                .add_systems(Update, customize::customize_terrain_menu_gpu);
+        } else {
+            app_.add_systems(Startup, spawn_terrain_cpu)
+                .add_systems(Update, customize::customize_terrain_menu_cpu);
+        }
     }
 }
 
-pub fn spawn_terrain(mut commands: Commands, 
+pub fn spawn_terrain_cpu(mut commands: Commands, 
                      mut meshes: ResMut<Assets<Mesh>>, 
                      mut materials: ResMut<Assets<StandardMaterial>>,
                      mut images: ResMut<Assets<Image>>,
@@ -59,8 +64,7 @@ pub fn spawn_terrain(mut commands: Commands,
                     ) {
     let map = noise::noise_map(
                 map_info.seed,
-                map_info.width, 
-                map_info.height, 
+                map_info.size, 
                 map_info.scale,
                 map_info.octaves,
                 map_info.persistance,
@@ -88,11 +92,32 @@ pub fn map_image(map: &Vec<f32>, map_info: &MapInfo) -> Image {
     }
 
     let image = Image::new( 
-        Extent3d { width: map_info.width, height: map_info.height, depth_or_array_layers: 1},
+        Extent3d { width: map_info.size, height: map_info.size, depth_or_array_layers: 1},
         TextureDimension::D2,
         image_data,
         TextureFormat::R8Unorm,
         RenderAssetUsages::RENDER_WORLD
     );
     image
+}
+
+pub fn spawn_terrain_gpu(mut commands: Commands, 
+                     mut meshes: ResMut<Assets<Mesh>>, 
+                     mut materials: ResMut<Assets<material::TerrainMaterial>>,
+                     map_info: Res<MapInfo>,
+                    ) 
+{
+    commands.spawn(MaterialMeshBundle {
+        mesh: meshes.add(Plane3d::default().mesh().size(20., 20.)),
+        material: materials.add(material::TerrainMaterial {
+            seed: map_info.seed,
+            size: map_info.size,
+            scale: map_info.scale,
+            octaves: map_info.octaves,
+            persistance: map_info.persistance,
+            lacunarity: map_info.lacunarity,
+            alpha_mode: AlphaMode::Blend
+        }),
+        ..default()
+    });
 }

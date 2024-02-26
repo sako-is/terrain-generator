@@ -2,8 +2,7 @@ use std::vec::Vec;
 use noise::*;
 
 pub fn noise_map(seed: u32,
-                 width: u32, 
-                 height: u32, 
+                 size: u32, 
                  mut scale: f32, 
                  octaves: i32, 
                  persistance: f32, 
@@ -16,8 +15,8 @@ pub fn noise_map(seed: u32,
     let (mut sample_x, mut sample_y, mut simplex_val): (f32, f32, f64);
     let (mut amplitude, mut frequency, mut noise_height): (f32, f32, f32); 
 
-    for y in 0..height {
-        for x in 0..width {
+    for y in 0..size {
+        for x in 0..size {
             amplitude = 1.;
             frequency = 1.;
             noise_height = 0.;
